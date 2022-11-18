@@ -1,4 +1,4 @@
-var jsPsychCategorizeImageSortable = (function (jspsych) {
+var jsPsychSortableImages = (function (jspsych) {
   'use strict';
 
   /**!
