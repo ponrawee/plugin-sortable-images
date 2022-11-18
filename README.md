@@ -1,4 +1,4 @@
-# jsPsychSortImages Plugin
+# jsPsychSortableImages Plugin
 
 This is a plugin for building an image categorisation trial for jsPsych. It uses [SortableJS](https://sortablejs.github.io/Sortable/). 
 
