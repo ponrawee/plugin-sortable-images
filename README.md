@@ -9,6 +9,9 @@ If you encounter any problem, please create a GitHub issue.
 Load the plugin's stylesheet (`styles/jspsych-sortable-images.css`) and script (`dist/index.browser.js`, or the minified version `dist/index.browser.min.js`) after loading the jsPsych script and stylesheet. This will make the `jsPsychSortableImages` trial type available for jsPsych. 
 
 ## Parameters
+
+\* Either `category_count` or `categories` (but not both) must be specified for the trial to work properly.
+
 | **Parameter**           | **Type**           | **Required?** | **Description**                                                                                                                                                                                                                                                                                                                                                                           |
 |-------------------------|--------------------|---------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | images                  | _array of strings_ | **Yes**       | An array of paths to the images to be categorized                                                                                                                                                                                                                                                                                                                                         |
