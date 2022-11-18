@@ -6,7 +6,7 @@ If you encounter any problem, please create a GitHub issue.
 
 ## Usage
 
-Load the plugin's stylesheet (`styles/jspsych-sortable-images.css`) and script (`dist/index.browser.js`, or the minified version `dist/index.browser.min.js`) after loading jsPsych script and stylesheet. This will make the `jsPsychSortableImages` trial type available for jsPsych. 
+Load the plugin's stylesheet (`styles/jspsych-sortable-images.css`) and script (`dist/index.browser.js`, or the minified version `dist/index.browser.min.js`) after loading the jsPsych script and stylesheet. This will make the `jsPsychSortableImages` trial type available for jsPsych. 
 
 ## Parameters
 
