@@ -3136,6 +3136,7 @@ class SortableImagesPlugin {
                 return splitted[splitted.length - 1]; // get the image filename if not given
             });
         }
+        trialData['initial_image_list'] = imageNames;
         if (imageNames.length !== trial.images.length) {
             console.error('jspsych-sortable-images: image_names and images must be of equal length.');
         }
@@ -3225,7 +3226,7 @@ class SortableImagesPlugin {
                 el.style.minHeight = trial.image_max_height + padding + 'px';
             });
         };
-        const get_category_data = () => {
+        const get_categorised_images = () => {
             const categoryElements = display_element.querySelectorAll('#jspsych-sortable-images .category');
             let categoryData = [];
             categoryElements.forEach((categoryElement) => {
@@ -3240,25 +3241,32 @@ class SortableImagesPlugin {
             });
             return categoryData;
         };
+        const get_current_image_list = () => {
+            const imageListElement = display_element.querySelector('#jspsych-sortable-images .image-list');
+            let images = imageListElement.querySelectorAll('.image');
+            let r = [];
+            images.forEach((image) => {
+                r.push(image.getAttribute('data-image-name'));
+            });
+            return r;
+        };
         const enable_button = () => {
             const submitBtn = display_element.querySelector('#jspsych-sortable-images .button-wrapper button');
             submitBtn.disabled = false;
             submitBtn.classList.remove('hidden');
             submitBtn.addEventListener('click', (e) => {
                 const el = e.currentTarget;
-                if (el.disabled) {
-                    return false;
+                if (!el.disabled) {
+                    save_categories();
+                    end_trial();
                 }
-                save_categories();
-                end_trial();
-                return true;
             });
         };
         const check_finish = () => {
             let passImageLength = true;
             let passMinMembers = true;
             let passFunction = true;
-            if (trial.require_sorting_all !== null) {
+            if (trial.require_sorting_all) {
                 // try to query for images
                 const imageListImages = display_element.querySelectorAll('#jspsych-sortable-images .image-list .image');
                 if (imageListImages.length !== 0) {
@@ -3276,8 +3284,9 @@ class SortableImagesPlugin {
                 }
             }
             if (trial.require_function !== null) {
-                const categoryData = get_category_data();
-                passFunction = trial.require_function(categoryData);
+                const categoryData = get_categorised_images();
+                const imageListData = get_current_image_list();
+                passFunction = trial.require_function(categoryData, imageListData);
             }
             if (passImageLength && passMinMembers && passFunction) {
                 enable_button();
@@ -3287,8 +3296,9 @@ class SortableImagesPlugin {
             }
         };
         const save_categories = () => {
-            const categoryMembers = get_category_data();
+            const categoryMembers = get_categorised_images();
             trialData.response = categoryMembers;
+            trialData['image_list'] = get_current_image_list();
         };
         const end_trial = () => {
             this.jsPsych.finishTrial(trialData);
@@ -3312,16 +3322,16 @@ class SortableImagesPlugin {
                     document.body.classList.remove('jspsych-sortable-images-grabbing');
                 }
             };
-            if (trial.require_sorting_all !== null ||
-                trial.min_per_category !== null ||
+            if (trial.require_sorting_all ||
+                trial.min_per_category > 0 ||
                 trial.require_function !== null) {
                 options['onSort'] = check_finish;
             }
             options = Object.assign(options, trial.sortablejs_options);
             new Sortable(el, options);
         });
-        if (trial.require_sorting_all === null &&
-            trial.min_per_category === null &&
+        if (!trial.require_sorting_all &&
+            trial.min_per_category <= 0 &&
             trial.require_function === null) {
             enable_button();
         }

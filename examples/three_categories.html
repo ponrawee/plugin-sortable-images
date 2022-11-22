@@ -28,7 +28,9 @@
 			var images = ["images/blue_wug.png","images/green_wug.png","images/orange_wug.png","images/purple_wug.png","images/skyblue_wug.png","images/yellow_wug.png", "images/gray_wug.png","images/lightgreen_wug.png","images/pink_wug.png","images/red_wug.png","images/white_wug.png"]
 			jsPsych.run([{
 				type: jsPsychSortableImages,
+				prompt: "In this example, there are three categories (category_count: 3), and no minimum number of members in each category (min_per_category: 0), so some categories can be empty.",
 				images: images,
+				require_sorting_all: false,
 				category_count: 3,
 				min_per_category: 0
 			}])
