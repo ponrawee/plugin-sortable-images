@@ -3134,19 +3134,24 @@ class SortableImagesPlugin {
                 return splitted[splitted.length - 1]; // get the image filename if not given
             });
         }
-        trialData['initial_image_list'] = imageNames;
         if (imageNames.length !== trial.images.length) {
             console.error('jspsych-sortable-images: image_names and images must be of equal length.');
         }
+        let presentedImages = trial.images;
+        let presentedImageNames = imageNames;
+        if (trial.randomize_image_list) {
+            let originalOrder = Array.from(Array(trial.images.length).keys());
+            let shuffledOrder = this.jsPsych.randomization.shuffle(originalOrder);
+            presentedImages = shuffledOrder.map((i) => trial.images[i]);
+            presentedImageNames = shuffledOrder.map((i) => imageNames[i]);
+        }
+        trialData['initial_image_list'] = presentedImageNames;
         const render_image_list = () => {
             let html = '<div class="image-list-wrapper"><div class="sorter image-list">';
-            let images = trial.images;
-            if (trial.randomize_image_list) {
-                images = this.jsPsych.randomization.shuffle(trial.images);
-            }
+            let images = presentedImages;
             for (let i = 0; i < images.length; i++) {
                 const image = images[i];
-                const imageName = imageNames[i];
+                const imageName = presentedImageNames[i];
                 html += '<div class="image image-' + imageName + '" data-image-name="' + imageName + '">';
                 html += '<img src="' + image + '">';
                 html += '</div>';
